@@ -1,8 +1,8 @@
 import { Router } from 'express';
+import GameController from './app/controllers/GameController/GameController';
 
 const routes = new Router();
-routes.get('/', (req, res) => {
-  return res.json();
-});
+
+routes.post("/games", GameController.store);
 
 export default routes;

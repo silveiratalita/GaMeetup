@@ -9,9 +9,10 @@ class MeetUp extends Model {
         isCanceled: Sequelize.BOOLEAN,
       },
       {
-        sequelize,
+        sequelize, modelName:'meetup'
       }
     );
+    MeetUp.hasOne( Game, { foreignKey: 'gameId' });
   }
 }
 

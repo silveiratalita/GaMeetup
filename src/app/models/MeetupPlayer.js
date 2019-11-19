@@ -1,10 +1,11 @@
 import Sequelize, { Model } from 'sequelize';
-class Game extends Model {
+class MeetupPlayer extends Model {
   static init(sequelize) {
     super.init(
       {
-        name: Sequelize.STRING,
-        type: Sequelize.STRING,
+        meetupId: Sequelize.INTEGER,
+        gameId: Sequelize.INTEGER,
+
       },
       {
         sequelize,
@@ -13,4 +14,4 @@ class Game extends Model {
   }
 }
 
-export default  Game;
+export default MeetupPlayer;

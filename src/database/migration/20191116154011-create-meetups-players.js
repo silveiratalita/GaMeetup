@@ -1,20 +1,21 @@
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('games', {
-      id: {
-        type: Sequelize.INTEGER.UNSIGNED,
+    return queryInterface.createTable('meetups-players', {
+      meetupId: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        unique: true,
+        references: {
+          model: 'meetups',
+          key: 'id',
+        },
       },
-      type: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      gameId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'games',
+          key: 'id',
+        },
       },
       created_at: {
         type: Sequelize.DATE,
@@ -32,6 +33,6 @@ module.exports = {
     });
   },
   down: queryInterface => {
-    return queryInterface.dropTable('games');
+    return queryInterface.dropTable('meetups-players');
   },
 };

@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import Game from './Game';
 class MeetUp extends Model {
   static init(sequelize) {
     super.init(
@@ -16,4 +17,4 @@ class MeetUp extends Model {
   }
 }
 
-export default Player;
+export default MeetUp;

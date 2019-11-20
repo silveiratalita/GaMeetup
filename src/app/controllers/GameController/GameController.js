@@ -4,8 +4,6 @@ import * as yup from 'yup';
 class GameController {
   async store(req, res) {
     console.log(req.body);
-
-    const { type, name } = req.body;
     const yup = require('yup');
     const schema = yup.object().shape({
       name: yup.string().required(),
@@ -16,11 +14,10 @@ class GameController {
       return res.status(400).json({ error: 'Validation Fail' });
     }
     try {
-      if (name != undefined && type != undefined) {
+      if (req.body.name != undefined && req.body.type != undefined) {
+        const gameExists = await Game.findOne({where:{name:req.body.name}});
 
-        const gameExists = await Game.findByPk({ where: name });
-
-        if (!gameExists) {
+        if (gameExists) {
           return res.status(400).json({ error: 'Game already registered' });
         }
         const gameCreated = await Game.create(req.body);

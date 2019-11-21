@@ -55,7 +55,7 @@ class GameController {
         });
         return res.send(gameUpdated);
       }
-      return res.send(json({ msg: 'No change in this game!' }));
+      return res.json({ msg: 'No change in this game!' });
 
     } catch (err) {
       console.error(err);

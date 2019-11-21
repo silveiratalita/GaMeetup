@@ -8,7 +8,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
-      gameId: {
+      game_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'games',

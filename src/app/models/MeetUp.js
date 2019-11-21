@@ -13,7 +13,7 @@ class MeetUp extends Model {
         sequelize, modelName:'meetup'
       }
     );
-    //MeetUp.hasOne( Game, { foreignKey: 'gameId' });
+    MeetUp.belongsTo(Game);
   }
 }
 

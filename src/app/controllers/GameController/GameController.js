@@ -31,7 +31,7 @@ class GameController {
 
   async updateGame(req, res) {
     const { type, name } = req.body;
-    const { id } = req.params;
+    const {id } = req.params;
     const yup = require('yup');
     const schema = yup.object().shape({
       name: yup.string(),
@@ -45,11 +45,14 @@ class GameController {
           error: ' Try again, change at least the type or name of the game ',
         });
     }
+    console.log('PARAMS', req.params)
 
     try {
-      const gameRegistred = await Game.findOne({ where: { id: id } });
+      const gameRegistred = await Game.findOne({ where: { id:id } });
       if (gameRegistred.name != name || gameRegistred.type != type) {
-        const gameUpdated = await Game.update(req.body, { where: { id: id } });
+        const gameUpdated = await Game.update(req.body, {
+          where: { id :id},
+        });
         return res.send(gameUpdated);
       }
       return res.send(json({ msg: 'No change in this game!' }));

@@ -61,5 +61,26 @@ class GameController {
       console.error(err);
     }
   }
+
+  async deleteGame(req, res) {
+
+    const { id } = req.params;
+
+    const gameFound = await Game.findOne({ where: { id: id } });
+
+    if (!gameFound) {
+      return res.send(json({ msg: "Game Not Found" }));
+    }
+    const deletedGame = await Game.destroy({ where: { id: id } });
+    return res.send(deletedGame);
+  }
+  async searchGames(req, res) {
+    const [games] = res.body;
+    if (games != undefined && games.lenght >= 0) {
+      const gamesFound = await Game.findAll({ where: games.map(game => game.name) });
+      return res.send(gamesFound.map(game => game));
+    }
+    return res.send(json({ msg: "No Game Found" }));
+   }
 }
 export default new GameController();

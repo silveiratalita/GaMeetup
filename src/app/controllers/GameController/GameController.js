@@ -31,7 +31,7 @@ class GameController {
 
   async updateGame(req, res) {
     const { type, name } = req.body;
-    const {id } = req.params;
+    const { id } = req.params;
     const yup = require('yup');
     const schema = yup.object().shape({
       name: yup.string(),
@@ -48,10 +48,10 @@ class GameController {
     console.log('PARAMS', req.params)
 
     try {
-      const gameRegistred = await Game.findOne({ where: { id:id } });
+      const gameRegistred = await Game.findOne({ where: { id: id } });
       if (gameRegistred.name != name || gameRegistred.type != type) {
         const gameUpdated = await Game.update(req.body, {
-          where: { id :id},
+          where: { id: id },
         });
         return res.send(gameUpdated);
       }
@@ -75,12 +75,30 @@ class GameController {
     return res.send(deletedGame);
   }
   async searchGames(req, res) {
-    const [games] = res.body;
-    if (games != undefined && games.lenght >= 0) {
-      const gamesFound = await Game.findAll({ where: games.map(game => game.name) });
-      return res.send(gamesFound.map(game => game));
+    const games = req.body;
+    const gamesFounded = [];
+    if (games != undefined) {
+      try {
+
+        for (const game of games) {
+
+          const gameFound = await Game.findOne({ where: { name: game.name } });
+
+          if (gameFound != undefined) {
+            gamesFounded.push(gameFound);
+          }
+
+        }
+      } catch (err) {
+        console.error(err);
+      }
+      return res.json(gamesFounded);
     }
-    return res.send(json({ msg: "No Game Found" }));
-   }
+
+    return res.json({error: "The name of the game is wrong, try again!"});
+  }
+
 }
 export default new GameController();
+
+

@@ -1,6 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 import Game from './Game';
-class MeetUp extends Model {
+class Meetup extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -10,11 +10,11 @@ class MeetUp extends Model {
         isCanceled: Sequelize.BOOLEAN,
       },
       {
-        sequelize, modelName:'meetup'
+        sequelize,
       }
     );
-    MeetUp.belongsTo(Game);
+    Meetup.belongsTo(Game);
   }
 }
 
-export default MeetUp;
+export default Meetup;

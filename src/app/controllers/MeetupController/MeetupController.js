@@ -7,13 +7,17 @@ class MeetupController {
   async createMeetup(req, res) {
     const { gameId } = req.params;
     const { date, name } = req.body;
-    const fomartDate = dayjs(date).format('YYYY-MM-DDTHH:mm:ssZ');
 
-    const meetup = new Meetup({
-      name: name,
-      date: fomartDate,
-      gameId:gameId,
-    });
+    const dayjs = require('dayjs');
+    let dateToFormat = dayjs(date);
+    req.body.date = dateToFormat.format('YYYY-MM-DDTHH:mm:ssZ');
+
+    const meetup = {
+      name,
+      date,
+      gameId,
+    };
+
     const yup = require('yup');
     const schema = yup.object().shape({
       name: yup.string().required(),
@@ -24,12 +28,19 @@ class MeetupController {
     if (!(await schema.isValid(meetup))) {
       return res.status(400).json({ error: 'Validation Fail' });
     }
-    console.log('funcionou a validacao');
-    const gameExists = await Game.findOne({ where: { id: gameId } });
-    if (gameExists) {
-      return res.send(gameExists);
+
+    try {
+      const gameExists = await Game.findOne({ where: { id: gameId } });
+      if (gameExists) {
+
+        const meetupCreated = await Meetup.create(req.body);
+        return res.send(meetupCreated);
+      }
+      return res.json({ error: 'Game Not Found' });
+
+    } catch (err) {
+      console.error(err);
     }
-    return res.json({ error: 'Game Not Found' });
   }
 }
 export default new MeetupController();

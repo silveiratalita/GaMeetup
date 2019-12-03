@@ -4,7 +4,7 @@ class Game extends Model {
     super.init(
       {
         id: {
-          type: DataTypes.INTEGER.UNSIGNED,
+          type: Sequelize.INTEGER,
           autoIncrement: true,
           primaryKey: true,
           unique: true,

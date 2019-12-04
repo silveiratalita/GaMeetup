@@ -1,4 +1,4 @@
-import Meetup from '../../models/MeetUp';
+import Meetup from '../../models/Meetup';
 import Game from '../../models/Game';
 import * as yup from 'yup';
 import dayjs from 'dayjs';
@@ -42,5 +42,9 @@ class MeetupController {
       console.error(err);
     }
   }
+
+
+
+
 }
 export default new MeetupController();

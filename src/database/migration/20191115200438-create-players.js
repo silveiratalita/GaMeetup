@@ -6,12 +6,12 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        unique: true,
       },
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
-        primaryKey: true,
+        unique: true
       },
       name: {
         type: Sequelize.STRING,
@@ -19,7 +19,7 @@ module.exports = {
       },
       password_hash: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       cellphone: {
         type: Sequelize.STRING,

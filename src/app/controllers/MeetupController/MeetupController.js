@@ -46,7 +46,7 @@ class MeetupController {
   }
 
   async invitePlayerToMeetup(req, res) {
-  //convite/player/:playerId/meetup/:meetupId/game/:gameId
+  //invite/player/:playerId/meetup/:meetupId/game/:gameId
     const { playerId, meetupId, gameId } = req.params;
     try {
       if (playerId !== undefined && meetupId !== undefined && gameId !== undefined) {
@@ -62,7 +62,7 @@ class MeetupController {
           const invitedAcepted = await MeetupPlayer.create(meetupCreated);
           return res.send(invitedAcepted);
         }
-        return res.json({ error: 'Game, player or meetup dont exist oe are wrong, please try again' });
+        return res.json({ error: 'Game, player or meetup dont exist  are wrong, please try again' });
       }
     } catch (err) {
       console.error(err);

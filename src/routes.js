@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import GameController from './app/controllers/GameController/GameController';
 import MeetupController from './app/controllers/MeetupController/MeetupController';
-import PlayerController from './app/controllers/PlayerController/PlayerController';
+import Player from './app/models/Player.js';
+import PlayerController from './app/controllers/PlayerController/PlayerController.js';
 const routes = new Router();
 
 routes.post("/games", GameController.store);
@@ -10,6 +11,8 @@ routes.delete('/games/:id', GameController.deleteGame);
 routes.get('/games/', GameController.searchGames);
 
 routes.post('/games/:gameId/meetup', MeetupController.createMeetup);
+routes.post('/players', function(req, res) {
+  PlayerController.createPlayer;
+});
 
-routes.post('/players', PlayerController.createPlayer);
 export default routes;

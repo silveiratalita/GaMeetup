@@ -1,17 +1,15 @@
-import * as yup from 'yup';
-import Player from '../../models/Player';
-import setPrototypeOf from 'setprototypeof';
+import Player from '../../models/Player.js';
+class PlayerController {
 
-class PlayerController{
-  async createPlayer(req,res) {
+   async createPlayer(req, res) {
     const { name, email } = req.body;
-
+     console.log(`REQBODY-----`,req.body);
     const yup = require('yup');
     const schema = yup.object().shape({
       name: yup.string().required(),
       email: yup.string().required(),
     });
-    if (!(await schema.isValid(meetup))) {
+    if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation Fail' });
     }
     try {
@@ -25,5 +23,6 @@ class PlayerController{
       console.log(err);
     }
   }
-}
+  }
 export default PlayerController;
+

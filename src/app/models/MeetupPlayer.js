@@ -7,15 +7,14 @@ class MeetupPlayer extends Model {
       {
         meetupId: Sequelize.INTEGER,
         playerId: Sequelize.INTEGER,
-
       },
       {
         sequelize,
       }
     );
-    // MeetupPlayer.hasMany(Player, { foreignKey: 'id' });
-    // MeetupPlayer.hasMany(Meetup, { foreignKey: 'id' });
+    MeetupPlayer.hasMany(Player, { foreignKey: 'id' });
+    MeetupPlayer.hasMany(Meetup, { foreignKey: 'id' });
   }
 }
-
 export default MeetupPlayer;
+

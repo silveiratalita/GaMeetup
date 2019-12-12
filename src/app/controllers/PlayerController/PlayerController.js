@@ -23,6 +23,5 @@ class PlayerController {
       console.log(err);
     }
   }
-  }
-export default PlayerController;
-
+}
+export default new PlayerController();

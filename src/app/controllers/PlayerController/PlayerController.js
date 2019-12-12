@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 import Player from '../../models/Player';
-import setPrototypeOf from 'setprototypeof';
 
 class PlayerController{
   async createPlayer(req,res) {
@@ -26,4 +25,4 @@ class PlayerController{
     }
   }
 }
-export default PlayerController;
+export default new PlayerController();

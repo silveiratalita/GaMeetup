@@ -23,7 +23,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      isCanceled: {
+      is_canceled: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
         allowNull: false,

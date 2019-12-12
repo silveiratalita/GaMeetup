@@ -27,7 +27,7 @@ class MeetupPlayerController {
             playerId: playerExists.id,
             meetupId: meetupExists.id,
           };
-          const invitedAcepted = await MeetupPlayer.create(meetupCreated);
+          const invitedAcepted = await MeetupPlayer.create(meetupPlayer);
           return res.send(invitedAcepted);
         }
         return res.json({

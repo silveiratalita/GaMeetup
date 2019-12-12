@@ -35,7 +35,7 @@ class MeetupController {
       const gameExists = await Game.findOne({ where: { id: gameId } });
       if (gameExists) {
 
-        const meetupCreated = await Meetup.create(req.body);
+        const meetupCreated = await Meetup.create(meetup);
         return res.send(meetupCreated);
       }
       return res.json({ error: 'Game Not Found' });

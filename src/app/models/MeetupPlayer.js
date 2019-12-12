@@ -1,6 +1,7 @@
 import Sequelize, { Model } from 'sequelize';
-import Meetup from '../models/Meetup';
-import Player from '../models/Player';
+import Meetup from './MeetUp';
+import Player from './Player';
+
 class MeetupPlayer extends Model {
   static init(sequelize) {
     super.init(

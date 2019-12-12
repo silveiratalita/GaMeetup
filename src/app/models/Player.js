@@ -4,8 +4,7 @@ class Player extends Model{
     super.init({
       name: Sequelize.STRING,
       email: Sequelize.STRING,
-      password: Sequelize.STRING,
-      password_hash: Sequelize.STRING,
+      cellphone:Sequelize.STRING,
     },
     {
       sequelize,

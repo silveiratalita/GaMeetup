@@ -13,4 +13,5 @@ routes.get('/games/', GameController.searchGames);
 routes.post('/games/:gameId/meetup', MeetupController.createMeetup);
 routes.post('/players', PlayerController.createPlayer);
 
+
 export default routes;

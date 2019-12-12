@@ -17,10 +17,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      password_hash: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
+
       cellphone: {
         type: Sequelize.STRING,
         allowNull: false,

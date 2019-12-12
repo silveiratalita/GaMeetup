@@ -8,6 +8,7 @@ class PlayerController {
     const schema = yup.object().shape({
       name: yup.string().required(),
       email: yup.string().required(),
+      cellphone: yup.string().required(),
     });
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation Fail' });

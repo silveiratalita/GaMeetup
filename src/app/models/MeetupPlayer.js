@@ -13,8 +13,8 @@ class MeetupPlayer extends Model {
         sequelize,
       }
     );
-    MeetupPlayer.hasMany(Player, { foreignKey: 'id' });
-    MeetupPlayer.hasMany(Meetup, { foreignKey: 'id' });
+    MeetupPlayer.hasOne(Player, { foreignKey: 'id' });
+    MeetupPlayer.hasOne(Meetup, { foreignKey: 'id' });
   }
 }
 export default MeetupPlayer;

@@ -20,8 +20,8 @@ class MeetupPlayer extends Model {
         modelName: "meetups-players",
       }
     );
-    MeetupPlayer.hasMany(Player, { foreignKey: 'id' });
-    MeetupPlayer.hasMany(Meetup, { foreignKey: 'id' });
+    MeetupPlayer.hasOne(Player, { foreignKey: 'id' });
+    MeetupPlayer.hasOne(Meetup, { foreignKey: 'id' });
   }
 }
 export default MeetupPlayer;

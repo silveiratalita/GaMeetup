@@ -2,20 +2,22 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('meetups-players', {
-      meetupId: {
+      meetup_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'meetups',
           key: 'id',
         },
+        primaryKey: true,
       },
-      playerId: {
+      player_id: {
         type: Sequelize.INTEGER,
         references: {
           model: 'players',
           key: 'id',
         },
+        primaryKey: true,
       },
       created_at: {
         type: Sequelize.DATE,

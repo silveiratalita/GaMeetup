@@ -2,8 +2,8 @@ import Meetup from '../../models/Meetup';
 import Game from '../../models/Game';
 import Player from '../../models/Player';
 import MeetupPlayer from '../../models/MeetupPlayer';
-import * as yup from 'yup';
-import dayjs from 'dayjs';
+import Mail from '../../../lib/mail';
+
 class MeetupPlayerController {
   async invitePlayerToMeetup(req, res) {
     const { playerId, meetupId, gameId } = req.params;
@@ -28,6 +28,11 @@ class MeetupPlayerController {
             meetupId: meetupExists.id,
           };
           const invitedAcepted = await MeetupPlayer.create(meetupPlayer);
+          await Mail.sendMail({
+            to: ` ${playerExists.name} <${playerExists.email}>`,
+            subject: `Bem vindo ao meetup  ${meetupExists.name} `,
+            text: `Você agora está participando do meetup  ${meetupExists.name} `,
+          });
           return res.send(invitedAcepted);
         }
         return res.json({

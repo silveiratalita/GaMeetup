@@ -1,6 +1,7 @@
 import Sequelize, { Model } from 'sequelize';
 import Meetup from './Meetup';
 import Player from './Player';
+import Mail from '../../lib/mail';
 
 class MeetupPlayer extends Model {
   static init(sequelize) {
@@ -13,11 +14,11 @@ class MeetupPlayer extends Model {
         playerId: {
           type: Sequelize.INTEGER,
           primaryKey: true,
-        }
+        },
       },
       {
         sequelize,
-        modelName: "meetups-players",
+        modelName: 'meetups-players',
       }
     );
     MeetupPlayer.hasOne(Player, { foreignKey: 'id' });
@@ -25,4 +26,3 @@ class MeetupPlayer extends Model {
   }
 }
 export default MeetupPlayer;
-

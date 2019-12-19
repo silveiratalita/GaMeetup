@@ -1,9 +1,10 @@
 import Player from '../../models/Player.js';
-class PlayerController {
+import Mail from '../../../lib/mail';
 
-   async createPlayer(req, res) {
+class PlayerController {
+  async createPlayer(req, res) {
     const { name, email } = req.body;
-     console.log(`REQBODY-----`,req.body);
+    console.log(`REQBODY-----`, req.body);
     const yup = require('yup');
     const schema = yup.object().shape({
       name: yup.string().required(),
@@ -16,7 +17,7 @@ class PlayerController {
     try {
       const playerExists = await Player.findOne({ where: { email } });
       if (playerExists) {
-        res.json({error: "Player already exists!"});
+        res.json({ error: 'Player already exists!' });
       }
       const playerCreated = await Player.create(req.body);
       return res.send(playerCreated);

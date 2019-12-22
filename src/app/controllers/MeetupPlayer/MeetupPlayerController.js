@@ -7,39 +7,49 @@ import Mail from '../../../lib/mail';
 class MeetupPlayerController {
   async invitePlayerToMeetup(req, res) {
     const { playerId, meetupId, gameId } = req.params;
-    console.log(req.params);
     try {
       if (
-        playerId !== undefined &&
-        meetupId !== undefined &&
-        gameId !== undefined
+        playerId == undefined ||
+        meetupId == undefined ||
+        gameId == undefined
       ) {
-        const gameExists = await Game.findOne({ where: { id: gameId } });
-        const playerExists = await Player.findOne({ where: { id: playerId } });
-        const meetupExists = await Meetup.findOne({ where: { id: meetupId } });
-
-        if (
-          gameExists !== undefined &&
-          playerExists !== undefined &&
-          meetupExists !== undefined
-        ) {
-          const meetupPlayer = {
-            playerId: playerExists.id,
-            meetupId: meetupExists.id,
-          };
-          const invitedAcepted = await MeetupPlayer.create(meetupPlayer);
-          await Mail.sendMail({
-            to: ` ${playerExists.name} <${playerExists.email}>`,
-            subject: `Bem vindo ao meetup  ${meetupExists.name} `,
-            text: `Você agora está participando do meetup  ${meetupExists.name} `,
-          });
-          return res.send(invitedAcepted);
-        }
-        return res.json({
-          error:
-            'Game, player or meetup dont exist  are wrong, please try again',
-        });
+        res.json({ error: 'The parameters can not be null' });
       }
+      const gameExists = await Game.findOne({ where: { id: gameId } });
+      const playerExists = await Player.findOne({ where: { id: playerId } });
+      const meetupExists = await Meetup.findOne({ where: { id: meetupId } });
+
+      if (!gameExists || !playerExists || !meetupExists) {
+        res.json({ error: 'Game, player or meetup dont exists, try again!' });
+      }
+
+      const alreadyinvited = await MeetupPlayer.findAll({
+        where: {
+          playerId,
+          meetupId,
+        },
+      });
+      // eslint-disable-next-line no-cond-assign
+
+      if (
+        alreadyinvited[0] !== undefined &&
+        alreadyinvited[0].playerId == playerId &&
+        alreadyinvited[0].meetupId == meetupId
+      ) {
+        return res.json({ error: 'Invite already accepted!' });
+      }
+      const meetupPlayer = {
+        playerId: playerExists.id,
+        meetupId: meetupExists.id,
+      };
+
+      const invitedAcepted = await MeetupPlayer.create(meetupPlayer);
+      await Mail.sendMail({
+        to: ` ${playerExists.name} <${playerExists.email}>`,
+        subject: `Bem vindo ao meetup  ${meetupExists.name} `,
+        text: `Você agora está participando do meetup  ${meetupExists.name} `,
+      });
+      return res.send(invitedAcepted);
     } catch (err) {
       console.error(err);
     }

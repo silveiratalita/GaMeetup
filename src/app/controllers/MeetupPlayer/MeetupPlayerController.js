@@ -46,7 +46,7 @@ class MeetupPlayerController {
         meetupId: meetupExists.id,
       };
 
-      const dateConflict = await MeetupPlayer.findAll({
+      const dateConflict = await MeetupPlayer.findOne({
         where: {
           playerId: playerExists.id,
         },

@@ -54,9 +54,20 @@ class MeetupPlayerController {
           {
             model: Meetup,
             where: {
-              startDate: {
-                [Op.between]: [meetupExists.startDate, meetupExists.endDate],
-              },
+              [Op.or] : [
+                {
+                  startDate: {
+                    [Op.between]: [meetupExists.startDate,
+                     meetupExists.endDate],
+                  },
+                },
+                {
+                  endDate: {
+                    [Op.between]: [meetupExists.startDate,
+                     meetupExists.endDate],
+                  },
+                },
+              ],
             },
           },
         ],

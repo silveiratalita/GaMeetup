@@ -43,25 +43,21 @@ class MeetupPlayerController {
         playerId: playerExists.id,
         meetupId: meetupExists.id,
       };
-      const { Op } = Sequelize;
+
       const dateConflict = await MeetupPlayer.findAll({
         where: {
           playerId: playerExists.id,
-          include: [
-            {
-              model: Meetup,
-              where: {
-                [Op.between]: [meetupExists.startDate, meetupExists.endDate],
-                // startDate: {
-                //   [Op.between]: [meetupExists.startDate, meetupExists.endDate],
-                // },
-                // endtDate: {
-                //   [Op.between]: [meetupExists.startDate, meetupExists.endDate],
-                // },
+        },
+        include: [
+          {
+            model: Meetup,
+            where: {
+              startDate: {
+                between: [meetupExists.startDate, meetupExists.endDate],
               },
             },
-          ],
-        },
+          },
+        ],
       });
 
       console.log('dateConflict----------------------', dateConflict);

@@ -5,6 +5,8 @@ import Player from '../../models/Player';
 import MeetupPlayer from '../../models/MeetupPlayer';
 import Mail from '../../../lib/mail';
 
+const { Op } = Sequelize;
+
 class MeetupPlayerController {
   async invitePlayerToMeetup(req, res) {
     const { playerId, meetupId, gameId } = req.params;
@@ -53,7 +55,7 @@ class MeetupPlayerController {
             model: Meetup,
             where: {
               startDate: {
-                between: [meetupExists.startDate, meetupExists.endDate],
+                [Op.between]: [meetupExists.startDate, meetupExists.endDate],
               },
             },
           },

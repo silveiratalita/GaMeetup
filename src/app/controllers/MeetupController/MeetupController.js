@@ -8,26 +8,30 @@ import MeetupPlayer from '../../models/MeetupPlayer';
 class MeetupController {
   async createMeetup(req, res) {
     const { gameId } = req.params;
-    const { date, name } = req.body;
+    const { startDate, endDate, name } = req.body;
 
     const dayjs = require('dayjs');
 
-    const dateToFormat = dayjs(date, 'America/Sao_Paulo');
-    req.body.date = dateToFormat.format('YYYY-MM-DDTHH:mm:ssZ');
+    const startDateToFormat = dayjs(startDate, 'America/Sao_Paulo');
+    const endDateToFormat = dayjs(endDate, 'America/Sao_Paulo');
+    req.body.startDate = startDateToFormat.format('YYYY-MM-DDTHH:mm:ssZ');
+    req.body.endDate = endDateToFormat.format('YYYY-MM-DDTHH:mm:ssZ');
 
     // const hour = dateToFormat.get('hour');
     // const minute = dateToFormat.get('minute');
 
     const meetup = {
       name,
-      date,
+      startDate,
+      endDate,
       gameId,
     };
 
     const yup = require('yup');
     const schema = yup.object().shape({
       name: yup.string().required(),
-      date: yup.date().required(),
+      startDate: yup.date().required(),
+      endDate: yup.date().required(),
       gameId: yup.number().required(),
     });
 
@@ -50,22 +54,26 @@ class MeetupController {
   }
 
   async updateMeetup(req, res) {
-    const { date, isCanceled } = req.body;
+    const { startDate, endDate, isCanceled } = req.body;
     const { meetupId } = req.params;
 
     const dayjs = require('dayjs');
-    const dateToFormat = dayjs(date, 'America/Sao_Paulo');
-    req.body.date = dateToFormat.format('YYYY-MM-DDTHH:mm:ssZ');
+    const startDateToFormat = dayjs(startDate, 'America/Sao_Paulo');
+    const endDateToFormat = dayjs(startDate, 'America/Sao_Paulo');
+    req.body.startDate = startDateToFormat.format('YYYY-MM-DDTHH:mm:ssZ');
+    req.body.endDate = endDateToFormat.format('YYYY-MM-DDTHH:mm:ssZ');
 
     const meetupToChange = {
       isCanceled,
-      date,
+      startDate,
+      endDate,
     };
 
     const yup = require('yup');
     const schema = yup.object().shape({
       isCanceled: yup.boolean(),
-      date: yup.date().required(),
+      startDate: yup.date().required(),
+      endDate: yup.date().required(),
     });
 
     if (!(await schema.isValid(meetupToChange))) {
@@ -84,7 +92,7 @@ class MeetupController {
           return res.send(returnChanged);
         }
 
-        return res.json({ error: 'error now' });
+        return res.json({ error: 'error in update meetup!' });
       }
     } catch (err) {
       console.log(err);

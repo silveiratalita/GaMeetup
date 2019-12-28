@@ -1,5 +1,6 @@
 import Sequelize, { DataTypes, Model } from 'sequelize';
 import Game from './Game';
+
 class Meetup extends Model {
   static init(sequelize) {
     super.init(
@@ -9,7 +10,8 @@ class Meetup extends Model {
           autoIncrement: true,
           primaryKey: true,
         },
-        date: Sequelize.DATE,
+        startDate: Sequelize.DATE,
+        endDate: Sequelize.DATE,
         gameId: Sequelize.INTEGER,
         name: Sequelize.STRING,
         isCanceled: Sequelize.BOOLEAN,
@@ -18,7 +20,7 @@ class Meetup extends Model {
         sequelize,
       }
     );
-    Meetup.belongsTo(Game, {foreignKey: 'id'});
+    Meetup.belongsTo(Game, { foreignKey: 'id' });
   }
 }
 

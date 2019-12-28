@@ -1,4 +1,4 @@
-const tableName ='meetups'
+const tableName = 'meetups';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('meetups', {
@@ -15,7 +15,11 @@ module.exports = {
           key: 'id',
         },
       },
-      date: {
+      start_date: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      end_date: {
         type: Sequelize.DATE,
         allowNull: false,
       },

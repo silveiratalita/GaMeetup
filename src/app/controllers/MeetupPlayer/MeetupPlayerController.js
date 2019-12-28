@@ -1,3 +1,4 @@
+import { Sequelize } from 'sequelize';
 import Meetup from '../../models/Meetup';
 import Game from '../../models/Game';
 import Player from '../../models/Player';
@@ -42,14 +43,38 @@ class MeetupPlayerController {
         playerId: playerExists.id,
         meetupId: meetupExists.id,
       };
-
-      const invitedAcepted = await MeetupPlayer.create(meetupPlayer);
-      await Mail.sendMail({
-        to: ` ${playerExists.name} <${playerExists.email}>`,
-        subject: `Bem vindo ao meetup  ${meetupExists.name} `,
-        text: `Você agora está participando do meetup  ${meetupExists.name} `,
+      const { Op } = Sequelize;
+      const dateConflict = await MeetupPlayer.findAll({
+        where: {
+          playerId: playerExists.id,
+          include: [
+            {
+              model: Meetup,
+              where: {
+                [Op.between]: [meetupExists.startDate, meetupExists.endDate],
+                // startDate: {
+                //   [Op.between]: [meetupExists.startDate, meetupExists.endDate],
+                // },
+                // endtDate: {
+                //   [Op.between]: [meetupExists.startDate, meetupExists.endDate],
+                // },
+              },
+            },
+          ],
+        },
       });
-      return res.send(invitedAcepted);
+
+      console.log('dateConflict----------------------', dateConflict);
+
+      // const invitedAcepted = await MeetupPlayer.create(meetupPlayer);
+
+      // await Mail.sendMail({
+      //   to: ` ${playerExists.name} <${playerExists.email}>`,
+      //   subject: `Bem vindo ao meetup  ${meetupExists.name} `,
+      //   text: `Você agora está participando do meetup  ${meetupExists.name} `,
+      // });
+      // return res.send(invitedAcepted);
+      return res.send('ok');
     } catch (err) {
       console.error(err);
     }

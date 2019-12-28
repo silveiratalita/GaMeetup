@@ -49,26 +49,24 @@ class MeetupPlayerController {
       const dateConflict = await MeetupPlayer.findOne({
         where: {
           playerId: playerExists.id,
+          [Op.or] : [
+            {
+              '$Meetup.start_date$': {
+                [Op.between]: [meetupExists.startDate,
+                 meetupExists.endDate],
+              },
+            },
+            {
+              '$Meetup.end_date$': {
+                [Op.between]: [meetupExists.startDate,
+                 meetupExists.endDate],
+              },
+            },
+          ],
         },
         include: [
           {
             model: Meetup,
-            where: {
-              [Op.or] : [
-                {
-                  startDate: {
-                    [Op.between]: [meetupExists.startDate,
-                     meetupExists.endDate],
-                  },
-                },
-                {
-                  endDate: {
-                    [Op.between]: [meetupExists.startDate,
-                     meetupExists.endDate],
-                  },
-                },
-              ],
-            },
           },
         ],
       });

@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize';
+import { date } from 'yup';
 import Meetup from '../../models/Meetup';
 import Game from '../../models/Game';
 import Player from '../../models/Player';
@@ -46,20 +47,18 @@ class MeetupPlayerController {
         meetupId: meetupExists.id,
       };
 
-      const dateConflict = await MeetupPlayer.findOne({
+      const dateConflict = await MeetupPlayer.findAll({
         where: {
           playerId: playerExists.id,
-          [Op.or] : [
+          [Op.or]: [
             {
               '$Meetup.start_date$': {
-                [Op.between]: [meetupExists.startDate,
-                 meetupExists.endDate],
+                [Op.between]: [meetupExists.startDate, meetupExists.endDate],
               },
             },
             {
               '$Meetup.end_date$': {
-                [Op.between]: [meetupExists.startDate,
-                 meetupExists.endDate],
+                [Op.between]: [meetupExists.startDate, meetupExists.endDate],
               },
             },
           ],
@@ -71,17 +70,37 @@ class MeetupPlayerController {
         ],
       });
 
-      console.log('dateConflict----------------------', dateConflict);
+      const invitedAcepted = await MeetupPlayer.create(meetupPlayer);
 
-      // const invitedAcepted = await MeetupPlayer.create(meetupPlayer);
+      if (dateConflict !== undefined) {
+        const meetupsConflict = dateConflict.map(meetup => meetup.Meetup.name);
+        await Mail.sendMail({
+          to: ` ${playerExists.name} <${playerExists.email}>`,
+          subject: `Bem vindo ao meetup  ${meetupExists.name} `,
+          text: `Você agora está participando do meetup  ${meetupExists.name}. Mas atenção!
+          Notamos que voê possui outros meetups e pode haver um conflito de horários.
+          Os meetups com conflito de horário são: ${meetupsConflict}.
+          Por favor, acesse seus meetups e verifique os horários!
 
-      // await Mail.sendMail({
-      //   to: ` ${playerExists.name} <${playerExists.email}>`,
-      //   subject: `Bem vindo ao meetup  ${meetupExists.name} `,
-      //   text: `Você agora está participando do meetup  ${meetupExists.name} `,
-      // });
-      // return res.send(invitedAcepted);
-      return res.send('ok');
+
+
+          Atenciosamente:
+          Equipe Gameetup
+          `,
+        });
+        return res.send(invitedAcepted);
+      }
+      await Mail.sendMail({
+        to: ` ${playerExists.name} <${playerExists.email}>`,
+        subject: `Bem vindo ao meetup  ${meetupExists.name} `,
+        text: `Você agora está participando do meetup  ${meetupExists.name}
+
+        Atenciosamente:
+        Equipe Gameetup
+        `,
+      });
+
+      return res.send(invitedAcepted);
     } catch (err) {
       console.error(err);
     }

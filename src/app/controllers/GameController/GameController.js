@@ -2,7 +2,9 @@ import * as yup from 'yup';
 import Game from '../../models/Game';
 
 class GameController {
-  async store(req, res) {
+
+  schemeGameValidation = async (gameReqBody) => {
+    console.log('foi chamado');
     const yup = require('yup');
     const schema = yup.object().shape(
       {
@@ -15,7 +17,7 @@ class GameController {
 
     // Validates, XXX: need to be refactored
     try {
-      game = await schema.validate(req.body, {
+      game = await schema.validate(gameReqBody, {
         strict: true,
         abortEarly: false,
       });
@@ -28,19 +30,27 @@ class GameController {
         errObj.errors = err.errors;
       }
 
-      return res.status(400).json(errObj);
+
+      return errObj;
+      // throw errObj;
     }
+  }
+
+  store = async (req, res) => {
+
+    console.log(this)
+    const teste= this.schemeGameValidation(req.body);
 
     try {
       const gameExists = await Game.findOne({
-        where: { name: game.name },
+        where: { name: req.body.name },
       });
 
       if (gameExists) {
         return res.status(400).json({ error: 'Game already registered' });
       }
 
-      const gameCreated = await Game.create(game);
+      const gameCreated = await Game.create(req.body);
 
       return res.json(gameCreated);
     } catch (err) {

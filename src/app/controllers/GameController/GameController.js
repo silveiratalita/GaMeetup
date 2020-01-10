@@ -53,7 +53,7 @@ class GameController {
     }
   }
 
-  async updateGame(req, res) {
+   updateGame=async(req, res)=> {
     const { type, name } = req.body;
     const gameValidation = this.schemeGameValidation(req.body);
     const { id } = req.params;

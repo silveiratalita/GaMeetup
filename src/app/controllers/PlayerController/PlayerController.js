@@ -2,18 +2,38 @@ import Player from '../../models/Player.js';
 import Mail from '../../../lib/mail';
 
 class PlayerController {
-  async createPlayer(req, res) {
-    const { name, email } = req.body;
-    console.log(`REQBODY-----`, req.body);
+  schemePlayerValidation = async (playerReqBody) => {
     const yup = require('yup');
-    const schema = yup.object().shape({
-      name: yup.string().required(),
-      email: yup.string().required(),
-      cellphone: yup.string().required(),
-    });
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation Fail' });
+    const schema = yup.object().shape(
+      {
+        name: yup.string(),
+        name: yup.string().required(),
+        email: yup.string().required(),
+        cellphone: yup.string().required(),
+      },
+      ['name', 'email', 'cellphone']
+    );
+    let player;
+    try {
+      meetupValidate = await schema.validate(playerReqBody, {
+        strict: true,
+        abortEarly: false,
+      });
+    } catch (err) {
+      const errObj = {
+        error: err.name,
+      };
+
+      if (err.name === 'ValidationError') {
+        errObj.errors = err.errors;
+      }
+      return errObj;
     }
+  };
+   createPlayer=async(req, res) =>{
+    const { name, email,cellphone } = req.body;
+
+     const playerValidate = await this.schemePlayerValidation(req.body);
     try {
       const playerExists = await Player.findOne({ where: { email } });
       if (playerExists) {

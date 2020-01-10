@@ -6,7 +6,7 @@ import Player from '../../models/Player';
 import MeetupPlayer from '../../models/MeetupPlayer';
 
 class MeetupController {
-  schemeMeetupPlayerValidation = async (meetup )=> {
+  schemeMeetupValidation = async (meetup )=> {
     const yup = require('yup');
     const schema = yup.object().shape(
       {
@@ -55,7 +55,7 @@ class MeetupController {
       gameId,
     };
 
-     const meetupValidate = this.schemeMeetupPlayerValidation(meetup);
+     const meetupValidate = this.schemeMeetupValidation(meetup);
 
     try {
       const gameExists = await Game.findOne({
@@ -86,7 +86,7 @@ class MeetupController {
       startDate,
       endDate,
     };
-  const meetupValidate = this.schemeMeetupPlayerValidation(meetupToChange);
+  const meetupValidate = this.schemeMeetupValidation(meetupToChange);
 
     try {
       const meetupExists = await Meetup.findOne({ where: { id: meetupId } });

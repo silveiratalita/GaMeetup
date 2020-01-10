@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import Game from '../../models/Game';
+import Meetup from '../../models/Meetup';
 
 class GameController {
 
@@ -78,6 +79,10 @@ class GameController {
 
     if (!gameFound) {
       return res.send(json({ msg: 'Game Not Found' }));
+    }
+    const gamesAssociateToMeetup = Meetup.findAll({ where: { gameId: gameFound.id } });
+    if (gamesAssociateToMeetup !== undefined) {
+      return res.json({error:{ 'You cant delete this game becous it associated with a meetups.'}})
     }
     const deletedGame = await Game.destroy({ where: { id } });
     return res.send(deletedGame);

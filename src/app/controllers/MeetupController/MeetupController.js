@@ -6,7 +6,35 @@ import Player from '../../models/Player';
 import MeetupPlayer from '../../models/MeetupPlayer';
 
 class MeetupController {
-  async createMeetup(req, res) {
+  schemeMeetupPlayerValidation = async (meetup )=> {
+    const yup = require('yup');
+    const schema = yup.object().shape(
+      {
+        name: yup.string(),
+        startDate: yup.date().required(),
+        endDate: yup.date().required(),
+        gameId: yup.number().required(),
+      },
+      ['name', 'startDate', 'endDate', 'gameId']
+    );
+    let meetupPlayer;
+    try {
+      meetupValidate = await schema.validate(meetup, {
+        strict: true,
+        abortEarly: false,
+      });
+    } catch (err) {
+      const errObj = {
+        error: err.name,
+      };
+
+      if (err.name === 'ValidationError') {
+        errObj.errors = err.errors;
+      }
+      return errObj;
+    }
+  };
+   createMeetup=async(req, res)=> {
     const { gameId } = req.params;
     const { startDate, endDate, name } = req.body;
 
@@ -27,17 +55,7 @@ class MeetupController {
       gameId,
     };
 
-    const yup = require('yup');
-    const schema = yup.object().shape({
-      name: yup.string().required(),
-      startDate: yup.date().required(),
-      endDate: yup.date().required(),
-      gameId: yup.number().required(),
-    });
-
-    if (!(await schema.isValid(meetup))) {
-      return res.status(400).json({ error: 'Validation Fail' });
-    }
+     const meetupValidate = this.schemeMeetupPlayerValidation(meetup);
 
     try {
       const gameExists = await Game.findOne({
@@ -53,13 +71,13 @@ class MeetupController {
     }
   }
 
-  async updateMeetup(req, res) {
+  updateMeetup=async(req, res)=> {
     const { startDate, endDate, isCanceled } = req.body;
     const { meetupId } = req.params;
 
     const dayjs = require('dayjs');
     const startDateToFormat = dayjs(startDate, 'America/Sao_Paulo');
-    const endDateToFormat = dayjs(startDate, 'America/Sao_Paulo');
+    const endDateToFormat = dayjs(endDate, 'America/Sao_Paulo');
     req.body.startDate = startDateToFormat.format('YYYY-MM-DDTHH:mm:ssZ');
     req.body.endDate = endDateToFormat.format('YYYY-MM-DDTHH:mm:ssZ');
 
@@ -68,17 +86,17 @@ class MeetupController {
       startDate,
       endDate,
     };
+  const meetupValidate = this.schemeMeetupPlayerValidation(meetupToChange);
+    // const yup = require('yup');
+    // const schema = yup.object().shape({
+    //   isCanceled: yup.boolean(),
+    //   startDate: yup.date().required(),
+    //   endDate: yup.date().required(),
+    // });
 
-    const yup = require('yup');
-    const schema = yup.object().shape({
-      isCanceled: yup.boolean(),
-      startDate: yup.date().required(),
-      endDate: yup.date().required(),
-    });
-
-    if (!(await schema.isValid(meetupToChange))) {
-      return res.status(400).json({ error: 'Validation Fail' });
-    }
+    // if (!(await schema.isValid(meetupToChange))) {
+    //   return res.status(400).json({ error: 'Validation Fail' });
+    // }
     try {
       const meetupExists = await Meetup.findOne({ where: { id: meetupId } });
       if (meetupExists) {

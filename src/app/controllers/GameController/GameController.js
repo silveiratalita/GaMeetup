@@ -82,7 +82,7 @@ class GameController {
     }
     const gamesAssociateToMeetup = Meetup.findAll({ where: { gameId: gameFound.id } });
     if (gamesAssociateToMeetup !== undefined) {
-      return res.json({error:{ 'You cant delete this game becous it associated with a meetups.'}})
+      return res.json({error: 'You cant delete this game becous it associated with a meetups.'});
     }
     const deletedGame = await Game.destroy({ where: { id } });
     return res.send(deletedGame);

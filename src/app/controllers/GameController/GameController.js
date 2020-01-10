@@ -4,7 +4,7 @@ import Game from '../../models/Game';
 class GameController {
 
   schemeGameValidation = async (gameReqBody) => {
-    console.log('foi chamado');
+
     const yup = require('yup');
     const schema = yup.object().shape(
       {
@@ -14,8 +14,6 @@ class GameController {
       ['name', 'type']
     );
     let game;
-
-    // Validates, XXX: need to be refactored
     try {
       game = await schema.validate(gameReqBody, {
         strict: true,
@@ -29,17 +27,14 @@ class GameController {
       if (err.name === 'ValidationError') {
         errObj.errors = err.errors;
       }
-
-
       return errObj;
-      // throw errObj;
     }
   }
 
   store = async (req, res) => {
 
-    console.log(this)
-    const teste= this.schemeGameValidation(req.body);
+
+    const gameValidation= this.schemeGameValidation(req.body);
 
     try {
       const gameExists = await Game.findOne({
@@ -60,20 +55,8 @@ class GameController {
 
   async updateGame(req, res) {
     const { type, name } = req.body;
+    const gameValidation = this.schemeGameValidation(req.body);
     const { id } = req.params;
-    const yup = require('yup');
-    const schema = yup.object().shape({
-      name: yup.string(),
-      type: yup.string(),
-    });
-
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({
-        error: ' Try again, change at least the type or name of the game ',
-      });
-    }
-    console.log('PARAMS', req.params);
-
     try {
       const gameRegistred = await Game.findOne({ where: { id } });
       if (gameRegistred.name != name || gameRegistred.type != type) {

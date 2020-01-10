@@ -87,16 +87,7 @@ class MeetupController {
       endDate,
     };
   const meetupValidate = this.schemeMeetupPlayerValidation(meetupToChange);
-    // const yup = require('yup');
-    // const schema = yup.object().shape({
-    //   isCanceled: yup.boolean(),
-    //   startDate: yup.date().required(),
-    //   endDate: yup.date().required(),
-    // });
 
-    // if (!(await schema.isValid(meetupToChange))) {
-    //   return res.status(400).json({ error: 'Validation Fail' });
-    // }
     try {
       const meetupExists = await Meetup.findOne({ where: { id: meetupId } });
       if (meetupExists) {

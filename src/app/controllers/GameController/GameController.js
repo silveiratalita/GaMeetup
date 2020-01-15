@@ -3,20 +3,22 @@ import Game from '../../models/Game';
 import Meetup from '../../models/Meetup';
 
 class GameController {
-
-  schemeGameValidation = async (gameReqBody) => {
-
-    const yup = require('yup');
-    const schema = yup.object().shape(
+  constructor(){
+    this.schema = yup.object().shape(
       {
         name: yup.string().required(),
         type: yup.string().required(),
       },
       ['name', 'type']
-    );
+    )
+  }
+  schemeGameValidation = async (gameReqBody) => {
+
+    const yup = require('yup');
+    
     let game;
     try {
-      game = await schema.validate(gameReqBody, {
+      game = await this.schema.validate(gameReqBody, {
         strict: true,
         abortEarly: false,
       });
@@ -33,9 +35,12 @@ class GameController {
   }
 
   store = async (req, res) => {
+    let err;
 
-
-    const gameValidation= this.schemeGameValidation(req.body);
+    if ((err = await this.schemeGameValidation(req.body))) {
+      console.log(err);
+      return res.status(400).json(err);
+    }
 
     try {
       const gameExists = await Game.findOne({

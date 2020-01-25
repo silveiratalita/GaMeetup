@@ -9,8 +9,8 @@ class PlayerController {
       const playerCreated = await Player.create(req.body);
       return res.send(playerCreated);
     } catch (err) {
-      const code = err.parent.code;
-       return res.send(dbErrorTranslate(code));
+
+       return res.send(dbErrorTranslate(err.parent));
     }
   }
 }

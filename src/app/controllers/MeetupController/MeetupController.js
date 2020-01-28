@@ -4,36 +4,37 @@ import Meetup from '../../models/Meetup';
 import Game from '../../models/Game';
 import Player from '../../models/Player';
 import MeetupPlayer from '../../models/MeetupPlayer';
+import dbErrorTranslate from '../../../lib/dbErrorTranslate';
 
 class MeetupController {
-  schemeMeetupValidation = async (meetup )=> {
-    const yup = require('yup');
-    const schema = yup.object().shape(
-      {
-        name: yup.string(),
-        startDate: yup.date().required(),
-        endDate: yup.date().required(),
-        gameId: yup.number().required(),
-      },
-      ['name', 'startDate', 'endDate', 'gameId']
-    );
-    let meetupPlayer;
-    try {
-      meetupValidate = await schema.validate(meetup, {
-        strict: true,
-        abortEarly: false,
-      });
-    } catch (err) {
-      const errObj = {
-        error: err.name,
-      };
+  // schemeMeetupValidation = async (meetup )=> {
+  //   const yup = require('yup');
+  //   const schema = yup.object().shape(
+  //     {
+  //       name: yup.string(),
+  //       startDate: yup.date().required(),
+  //       endDate: yup.date().required(),
+  //       gameId: yup.number().required(),
+  //     },
+  //     ['name', 'startDate', 'endDate', 'gameId']
+  //   );
+  //   let meetupPlayer;
+  //   try {
+  //     meetupValidate = await schema.validate(meetup, {
+  //       strict: true,
+  //       abortEarly: false,
+  //     });
+  //   } catch (err) {
+  //     const errObj = {
+  //       error: err.name,
+  //     };
 
-      if (err.name === 'ValidationError') {
-        errObj.errors = err.errors;
-      }
-      return errObj;
-    }
-  };
+  //     if (err.name === 'ValidationError') {
+  //       errObj.errors = err.errors;
+  //     }
+  //     return errObj;
+  //   }
+  // };
    createMeetup=async(req, res)=> {
     const { gameId } = req.params;
     const { startDate, endDate, name } = req.body;
@@ -55,19 +56,20 @@ class MeetupController {
       gameId,
     };
 
-     const meetupValidate = this.schemeMeetupValidation(meetup);
+    //  const meetupValidate = this.schemeMeetupValidation(meetup);
 
     try {
-      const gameExists = await Game.findOne({
-        where: { id: gameId },
-      });
-      if (gameExists) {
+      // const gameExists = await Game.findOne({
+      //   where: { id: gameId },
+      // });
+      // if (gameExists) {
         const meetupCreated = await Meetup.create(meetup);
         return res.send(meetupCreated);
-      }
-      return res.json({ error: 'Game Not Found' });
+      // }
+      // return res.json({ error: 'Game Not Found' });
     } catch (err) {
-      console.error(err);
+     return res.send(dbErrorTranslate(err.parent));
+      console.log(err.parent);
     }
   }
 
@@ -86,25 +88,26 @@ class MeetupController {
       startDate,
       endDate,
     };
-  const meetupValidate = this.schemeMeetupValidation(meetupToChange);
+  // const meetupValidate = this.schemeMeetupValidation(meetupToChange);
 
     try {
-      const meetupExists = await Meetup.findOne({ where: { id: meetupId } });
-      if (meetupExists) {
+      // const meetupExists = await Meetup.findOne({ where: { id: meetupId } });
+      // if (meetupExists) {
         const meetupChange = await Meetup.update(meetupToChange, {
           where: { id: meetupId },
         });
-        if (meetupChange !== undefined) {
-          const returnChanged = await Meetup.findOne({
-            where: { id: meetupId },
-          });
-          return res.send(returnChanged);
-        }
+        // if (meetupChange !== undefined) {
+          // const returnChanged = await Meetup.findOne({
+          //   where: { id: meetupId },
+          // });
+          return res.send(meetupChange);
+        // }
 
-        return res.json({ error: 'error in update meetup!' });
-      }
+      //   return res.json({ error: 'error in update meetup!' });
+      // }
     } catch (err) {
       console.log(err);
+      return res.send(dbErrorTranslate(err.parent));
     }
   }
 }

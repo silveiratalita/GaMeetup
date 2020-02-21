@@ -1,24 +1,25 @@
-import Sequelize,  { Model } from 'sequelize';
-class Player extends Model{
+import Sequelize, { Model } from 'sequelize';
+
+class Player extends Model {
   static init(sequelize) {
-    super.init({
-      id: {
+    super.init(
+      {
+        id: {
           type: Sequelize.INTEGER,
           autoIncrement: true,
           primaryKey: true,
         },
-      name: Sequelize.STRING,
-      email: {
-        type: Sequelize.STRING,
-        unique: true,
+        name: Sequelize.STRING,
+        email: {
+          type: Sequelize.STRING,
+          unique: true,
+        },
+        cellphone: Sequelize.STRING,
       },
-      cellphone:Sequelize.STRING,
-    },
-    {
-      sequelize,
-    }
+      {
+        sequelize,
+      }
     );
-
   }
 }
 

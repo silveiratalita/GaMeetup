@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize';
-import { date } from 'yup';
 import Meetup from '../../models/Meetup';
 import Game from '../../models/Game';
 import Player from '../../models/Player';

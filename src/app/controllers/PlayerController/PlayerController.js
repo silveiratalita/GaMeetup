@@ -1,28 +1,16 @@
 import Player from '../../models/Player.js';
 import Mail from '../../../lib/mail';
+import dbErrorTranslate from '../../../lib/dbErrorTranslate';
 
 class PlayerController {
-  async createPlayer(req, res) {
-    const { name, email } = req.body;
-    console.log(`REQBODY-----`, req.body);
-    const yup = require('yup');
-    const schema = yup.object().shape({
-      name: yup.string().required(),
-      email: yup.string().required(),
-      cellphone: yup.string().required(),
-    });
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation Fail' });
-    }
+   createPlayer=async(req, res) =>{
+    const { name, email,cellphone } = req.body;
     try {
-      const playerExists = await Player.findOne({ where: { email } });
-      if (playerExists) {
-        res.json({ error: 'Player already exists!' });
-      }
       const playerCreated = await Player.create(req.body);
       return res.send(playerCreated);
     } catch (err) {
-      console.log(err);
+
+       return res.send(dbErrorTranslate(err.parent));
     }
   }
 }

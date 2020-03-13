@@ -1,14 +1,11 @@
 function dbErrorTranslate(err) {
+  let parsedMsg, rgx, matches;
+
   switch (err.code) {
     case '23502':
-      return {
-        message: `You are in  ${err.code} error code! The message is   ${err.detail}. This errror occurred in  ${err.table} table.  This erros was checked in routine ${err.routine}. So, please, check the constraint ${err.constraint},since there is a big chance that this field cannot be null, therefore, you cannot insert null or undefined values in it!!!`,
-        code: err.code,
-        detail: err.detail,
-        table: err.table,
-        routine: err.routine,
-        constraint: err.constranint,
-      };
+      rgx = /null value in column "([^"]+)" violates not-null constraint/;
+      matches = rgx.exec(err.message);
+      parsedMsg = `Field "${matches[1]}" could not be null`;
       break;
     case '23505':
       return {
@@ -32,6 +29,15 @@ function dbErrorTranslate(err) {
     default:
       return 'error: 500   => Something went wrong!';
   }
+
+  return {
+    message: parsedMsg || err.message,
+    code: err.code,
+    detail: err.detail,
+    table: err.table,
+    routine: err.routine,
+    constraint: err.constranint,
+  };
 }
 
 export default dbErrorTranslate;

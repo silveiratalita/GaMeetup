@@ -1,5 +1,6 @@
 import Sequelize, { DataTypes, Model } from 'sequelize';
 import Game from './Game';
+import MeetupMessage from './MeetupMessage';
 
 class Meetup extends Model {
   static init(sequelize) {
@@ -21,6 +22,7 @@ class Meetup extends Model {
       }
     );
     Meetup.belongsTo(Game, { foreignKey: 'id' });
+    Meetup.hasMany(MeetupMessage, { foreignKey: 'id' });
   }
 }
 

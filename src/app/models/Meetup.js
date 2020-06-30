@@ -19,10 +19,11 @@ class Meetup extends Model {
       },
       {
         sequelize,
+        modelName:'meetup'
       }
     );
     Meetup.belongsTo(Game, { foreignKey: 'id' });
-    Meetup.hasMany(MeetupMessage, { foreignKey: 'id' });
+    // Meetup.hasMany(MeetupMessage,{foreignKey:'id',sourceKey:'id'});
   }
 }
 

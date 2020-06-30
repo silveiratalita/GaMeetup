@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e540c5e7-77eb-4501-ae5b-a8073d365691",
+		"_postman_id": "3ca8d416-b91e-4ffe-888c-30d90b3a8443",
 		"name": "GameetUp",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -230,6 +230,36 @@
 					"path": [
 						"meetup",
 						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CRIA UMA MENSSAGEM",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"date\":\"2020-09-01T01:35:01.000\",\n    \"content\":\"Conteudo da mensagem teste\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/newmessages/1/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"newmessages",
+						"1",
+						"1"
 					]
 				}
 			},

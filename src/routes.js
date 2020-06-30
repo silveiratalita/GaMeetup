@@ -6,6 +6,7 @@ import PlayerController from './app/controllers/PlayerController/PlayerControlle
 import MeetupPlayer from './app/models/MeetupPlayer';
 import MeetupPlayerController from './app/controllers/MeetupPlayer/MeetupPlayerController';
 import Meetup from './app/models/Meetup';
+import MeetupMessageController from './app/controllers/MeetupMessageController/MeetupMessageController';
 
 const routes = new Router();
 
@@ -21,4 +22,6 @@ routes.post(
   MeetupPlayerController.invitePlayerToMeetup
 );
 routes.put('/meetup/:meetupId/', MeetupController.updateMeetup);
+routes.post('/newmessages/:meetupId/:playerId',MeetupMessageController.createMessage);
+
 export default routes;

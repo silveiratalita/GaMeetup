@@ -29,6 +29,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      content:{
+        type:Sequelize.STRING,
+        allowNull:false,
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,

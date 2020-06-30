@@ -25,10 +25,14 @@ class MeetupMessage extends Model {
           type: Sequelize.DATE,
           allowNull: false,
         },
+        content:{
+          type:Sequelize.STRING,
+          allowNull:false,
+        }
       },
       {
         sequelize,
-        // modelName: 'meetups-players',
+         modelName: 'meetup-messages',
       }
     );
     MeetupMessage.belongsTo(Meetup, { foreignKey: 'id' });

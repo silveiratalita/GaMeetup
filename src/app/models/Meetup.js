@@ -19,7 +19,7 @@ class Meetup extends Model {
       },
       {
         sequelize,
-        modelName:'meetup'
+        modelName: 'meetup',
       }
     );
     Meetup.belongsTo(Game, { foreignKey: 'id' });

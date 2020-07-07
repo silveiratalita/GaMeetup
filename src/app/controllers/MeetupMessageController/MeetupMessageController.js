@@ -8,9 +8,9 @@ import dbErrorTranslate from '../../../lib/dbErrorTranslate';
 
 class MeetupController {
   
-   createMessage=async(req, res)=> {
+   createMessage = async(req, res)=> {
 
-    const {meetupId,playerId,}=req.params
+    const {meetupId,playerId}=req.params
     
     const { date, content  } = req.body;
 

@@ -22,6 +22,9 @@ routes.post(
   MeetupPlayerController.invitePlayerToMeetup
 );
 routes.put('/meetup/:meetupId/', MeetupController.updateMeetup);
-routes.post('/newmessages/:meetupId/:playerId',MeetupMessageController.createMessage);
+routes.post(
+  '/messages/:meetupId/:playerId',
+  MeetupMessageController.createMessage
+);
 
 export default routes;

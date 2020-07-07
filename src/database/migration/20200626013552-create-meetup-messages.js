@@ -15,7 +15,7 @@ module.exports = {
           model: 'meetups',
           key: 'id',
         },
-        primaryKey: true,
+        primaryKey: false,
       },
       player_id: {
         type: Sequelize.INTEGER,
@@ -23,15 +23,15 @@ module.exports = {
           model: 'players',
           key: 'id',
         },
-        primaryKey: true,
+        primaryKey: false,
       },
       date: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      content:{
-        type:Sequelize.STRING,
-        allowNull:false,
+      content: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       created_at: {
         type: Sequelize.DATE,

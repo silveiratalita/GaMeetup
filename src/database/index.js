@@ -4,8 +4,9 @@ import Game from '../app/models/Game';
 import Player from '../app/models/Player';
 import MeetupPlayer from '../app/models/MeetupPlayer';
 import Meetup from '../app/models/Meetup';
+import MeetupMessage from '../app/models/MeetupMessage';
 
-const models = [Game, Player, Meetup, MeetupPlayer];
+const models = [Game, Player, Meetup, MeetupPlayer, MeetupMessage];
 class Database {
   constructor() {
     this.init();

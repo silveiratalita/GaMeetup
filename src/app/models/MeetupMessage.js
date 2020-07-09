@@ -1,5 +1,4 @@
 import Sequelize, { Model, DataTypes } from 'sequelize';
-
 import Meetup from './Meetup';
 import Player from './Player';
 

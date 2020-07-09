@@ -20,7 +20,8 @@
     "postdocker-up": "sleep 5 && yarn run-migration",
     "run-migration": "yarn sequelize db:migrate",
     "docker-down": "docker-compose -f docker-compose-dev.yml down",
-    "dev:debug": "nodemon --inspect src/server.js"
+    "dev:debug": "nodemon --inspect src/server.js",
+    "lint": "eslint src/** --ext .js --ignore-pattern src/key/*.pem"
   },
   "devDependencies": {
     "eslint": "^6.6.0",
